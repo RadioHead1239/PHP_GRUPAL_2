@@ -18,6 +18,9 @@ class Cliente {
         }
 
         return $errores;
+    
+
+        //Commit de Victor
     }
 
     public function crearCliente($nombre, $correo, $telefono, $direccion) {
