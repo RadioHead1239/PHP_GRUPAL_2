@@ -5,6 +5,7 @@ class Cliente {
     public function __construct($conexion) {
         $this->db = $conexion;
     }
+    //TESTEANDO ANDO
 
     private function validarDatos($nombre, $correo) {
         $errores = [];
@@ -18,7 +19,6 @@ class Cliente {
         }
 
         return $errores;
-        // Retorna un array de errores, vacío si no hay errores
     }
 
     public function crearCliente($nombre, $correo, $telefono, $direccion) {
