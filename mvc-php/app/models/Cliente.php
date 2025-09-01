@@ -18,6 +18,7 @@ class Cliente {
         }
 
         return $errores;
+        // Retorna un array de errores, vacío si no hay errores
     }
 
     public function crearCliente($nombre, $correo, $telefono, $direccion) {
