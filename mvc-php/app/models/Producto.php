@@ -1,42 +1,35 @@
 <?php
 class Producto {
-    private $db;
+    private $idProducto;
+    private $nombre;
+    private $imagen;
+    private $descripcion;
+    private $precio;
+    private $stock;
+    private $estado;
+    private $fechaRegistro;
 
-    public function __construct($conexion) {
-        $this->db = $conexion;
-    }
+    public function getIdProducto() { return $this->idProducto; }
+    public function setIdProducto($idProducto) { $this->idProducto = $idProducto; }
 
-    private function validarDatos($nombre, $precio, $stock) {
-        $errores = [];
+    public function getNombre() { return $this->nombre; }
+    public function setNombre($nombre) { $this->nombre = $nombre; }
 
-        if (empty($nombre)) {
-            $errores[] = "El nombre del producto es obligatorio.";
-        }
+    public function getImagen() { return $this->imagen; }
+    public function setImagen($imagen) { $this->imagen = $imagen; }
 
-        if (!is_numeric($precio) || $precio <= 0) {
-            $errores[] = "El precio debe ser un número mayor a 0.";
-        }
+    public function getDescripcion() { return $this->descripcion; }
+    public function setDescripcion($descripcion) { $this->descripcion = $descripcion; }
 
-        if (!is_numeric($stock) || $stock < 0) {
-            $errores[] = "El stock no puede ser negativo.";
-        }
+    public function getPrecio() { return $this->precio; }
+    public function setPrecio($precio) { $this->precio = $precio; }
 
-        return $errores;
-    }
+    public function getStock() { return $this->stock; }
+    public function setStock($stock) { $this->stock = $stock; }
 
-    public function crearProducto($nombre, $descripcion, $precio, $stock) {
-        $errores = $this->validarDatos($nombre, $precio, $stock);
-        if (!empty($errores)) return $errores;
+    public function getEstado() { return $this->estado; }
+    public function setEstado($estado) { $this->estado = $estado; }
 
-        $stmt = $this->db->prepare("INSERT INTO Producto (Nombre, Descripcion, Precio, Stock) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$nombre, $descripcion, $precio, $stock]);
-
-        return true;
-    }
-
-    public function listarProductos() {
-        $stmt = $this->db->query("SELECT * FROM Producto WHERE Estado = 1 ORDER BY FechaRegistro DESC");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    public function getFechaRegistro() { return $this->fechaRegistro; }
+    public function setFechaRegistro($fechaRegistro) { $this->fechaRegistro = $fechaRegistro; }
 }
-?>
