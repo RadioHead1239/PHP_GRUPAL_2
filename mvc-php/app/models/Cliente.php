@@ -1,38 +1,27 @@
 <?php
 class Cliente {
-    private $db;
+    private $idCliente;
+    private $nombre;
+    private $correo;
+    private $telefono;
+    private $direccion;
+    private $fechaRegistro;
 
-    public function __construct($conexion) {
-        $this->db = $conexion;
-    }
+    public function getIdCliente() { return $this->idCliente; }
+    public function setIdCliente($idCliente) { $this->idCliente = $idCliente; }
 
-    private function validarDatos($nombre, $correo) {
-        $errores = [];
+    public function getNombre() { return $this->nombre; }
+    public function setNombre($nombre) { $this->nombre = $nombre; }
 
-        if (empty($nombre)) {
-            $errores[] = "El nombre es obligatorio.";
-        }
+    public function getCorreo() { return $this->correo; }
+    public function setCorreo($correo) { $this->correo = $correo; }
 
-        if (!empty($correo) && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            $errores[] = "Correo no válido.";
-        }
+    public function getTelefono() { return $this->telefono; }
+    public function setTelefono($telefono) { $this->telefono = $telefono; }
 
-        return $errores;
-    }
+    public function getDireccion() { return $this->direccion; }
+    public function setDireccion($direccion) { $this->direccion = $direccion; }
 
-    public function crearCliente($nombre, $correo, $telefono, $direccion) {
-        $errores = $this->validarDatos($nombre, $correo);
-        if (!empty($errores)) return $errores;
-
-        $stmt = $this->db->prepare("INSERT INTO Cliente (Nombre, Correo, Telefono, Direccion) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$nombre, $correo, $telefono, $direccion]);
-
-        return true;
-    }
-
-    public function listarClientes() {
-        $stmt = $this->db->query("SELECT * FROM Cliente ORDER BY FechaRegistro DESC");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    public function getFechaRegistro() { return $this->fechaRegistro; }
+    public function setFechaRegistro($fechaRegistro) { $this->fechaRegistro = $fechaRegistro; }
 }
-?>
