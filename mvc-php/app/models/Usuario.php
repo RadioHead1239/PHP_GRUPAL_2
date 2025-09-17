@@ -1,51 +1,79 @@
 <?php
 class Usuario {
-    private $db;
+    private $idUsuario;
+    private $nombre;
+    private $correo;
+    private $claveHash;
+    private $rol;
+    private $estado;
+    private $fechaRegistro;
 
-    public function __construct($conexion) {
-        $this->db = $conexion;
+    public function __construct(
+        $idUsuario = null,
+        $nombre = null,
+        $correo = null,
+        $claveHash = null,
+        $rol = null,
+        $estado = true,
+        $fechaRegistro = null
+    ) {
+        $this->idUsuario = $idUsuario;
+        $this->nombre = $nombre;
+        $this->correo = $correo;
+        $this->claveHash = $claveHash;
+        $this->rol = $rol;
+        $this->estado = $estado;
+        $this->fechaRegistro = $fechaRegistro;
     }
 
-    public function validarDatos($nombre, $correo, $clave) {
-        $errores = [];
-
-        if (empty($nombre) || strlen($nombre) < 3) {
-            $errores[] = "El nombre debe tener al menos 3 caracteres.";
-        }
-
-        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            $errores[] = "Correo no válido.";
-        }
-
-        if (strlen($clave) < 6) {
-            $errores[] = "La contraseña debe tener al menos 6 caracteres.";
-        }
-
-        return $errores;
+    // Getters y Setters
+    public function getIdUsuario() {
+        return $this->idUsuario;
+    }
+    public function setIdUsuario($idUsuario) {
+        $this->idUsuario = $idUsuario;
     }
 
-    public function crearUsuario($nombre, $correo, $clave, $rol = "Vendedor") {
-        $errores = $this->validarDatos($nombre, $correo, $clave);
-        if (!empty($errores)) return $errores;
-
-        $hash = password_hash($clave, PASSWORD_BCRYPT);
-
-        $stmt = $this->db->prepare("INSERT INTO Usuario (Nombre, Correo, ClaveHash, Rol) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$nombre, $correo, $hash, $rol]);
-
-        return true;
+    public function getNombre() {
+        return $this->nombre;
+    }
+    public function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
 
-    public function login($correo, $clave) {
-        $stmt = $this->db->prepare("SELECT * FROM Usuario WHERE Correo = ? AND Estado = 1");
-        $stmt->execute([$correo]);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getCorreo() {
+        return $this->correo;
+    }
+    public function setCorreo($correo) {
+        $this->correo = $correo;
+    }
 
-        if ($usuario && password_verify($clave, $usuario['ClaveHash'])) {
-            return $usuario;
-        }
+    public function getClaveHash() {
+        return $this->claveHash;
+    }
+    public function setClaveHash($claveHash) {
+        $this->claveHash = $claveHash;
+    }
 
-        return false;
+    public function getRol() {
+        return $this->rol;
+    }
+    public function setRol($rol) {
+        $this->rol = $rol;
+    }
+
+    public function getEstado() {
+        return $this->estado;
+    }
+    public function setEstado($estado) {
+        $this->estado = $estado;
+    }
+
+    public function getFechaRegistro() {
+        return $this->fechaRegistro;
+    }
+    public function setFechaRegistro($fechaRegistro) {
+        $this->fechaRegistro = $fechaRegistro;
     }
 }
 ?>
