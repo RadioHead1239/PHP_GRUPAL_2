@@ -9,8 +9,10 @@
 
   <!-- Menú -->
   <ul class="nav nav-pills flex-column mb-auto">
+
+
     <li class="nav-item">
-      <a href="../venta/RealizarVenta.php" class="nav-link text-white">
+      <a href="../venta/registrarventa.php" class="nav-link text-white">
         <i class="fa-solid fa-cart-plus me-2"></i> Nueva Venta
       </a>
     </li>
@@ -20,15 +22,21 @@
       </a>
     </li>
     <li>
-      <a href="../cliente/listado.php" class="nav-link text-white">
+      <a href="../venta/clientes.php" class="nav-link text-white">
         <i class="fa-solid fa-user-group me-2"></i> Clientes
       </a>
     </li>
 
     <?php if ($_SESSION['usuario']['Rol'] === 'Administrador'): ?>
       <hr class="text-secondary">
+          <li class="nav-item mb-2">
+      <a href="../usuario/admin.php" class="nav-link text-white">
+        <i class="fa-solid fa-gauge-high me-2"></i> Dashboard
+      </a>
+    </li>
+
       <li>
-        <a href="../producto/listado.php" class="nav-link text-white">
+        <a href="../venta/productos.php" class="nav-link text-white">
           <i class="fa-solid fa-box-open me-2"></i> Productos
         </a>
       </li>

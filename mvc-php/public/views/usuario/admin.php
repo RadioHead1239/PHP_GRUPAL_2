@@ -17,7 +17,7 @@ $usuario = $_SESSION['usuario'];
 
 <!-- Contenido principal -->
 <div class="p-4 flex-grow-1">
-  <h2>📊 Dashboard Administrativo</h2>
+  <h2>Dashboard Administrativo</h2>
   <p>Bienvenido, <strong><?php echo htmlspecialchars($usuario['Nombre']); ?></strong></p>
 
   <!-- Métricas rápidas -->
@@ -52,13 +52,13 @@ $usuario = $_SESSION['usuario'];
   <div class="row mt-5">
     <div class="col-md-6">
       <div class="card shadow-sm p-3">
-        <h5 class="text-center">📈 Ventas por Mes</h5>
+        <h5 class="text-center">Ventas por Mes</h5>
         <canvas id="ventasMesChart"></canvas>
       </div>
     </div>
     <div class="col-md-6">
       <div class="card shadow-sm p-3">
-        <h5 class="text-center">🔥 Productos más Vendidos</h5>
+        <h5 class="text-center">Productos más Vendidos</h5>
         <canvas id="productosChart"></canvas>
       </div>
     </div>

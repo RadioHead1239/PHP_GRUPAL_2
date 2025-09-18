@@ -4,7 +4,7 @@ session_start();
 // 🔒 Seguridad: solo admin
 
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrador') {
-    header("Location: login.php");
+    header("Location: login.php"); //esto se debe de reutilizar siempre
     exit;
 }
 
