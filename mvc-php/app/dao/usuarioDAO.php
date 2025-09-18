@@ -3,13 +3,42 @@ require_once __DIR__ . "//../config/database.php";
 require_once __DIR__ . "//../models/Usuario.php";
 
 
-class usuarioDAO {
+class UsuarioDAO  {
     private $conn;
 
     public function __construct() {
         $database = new Database();
         $this->conn = $database->getConnection();
     }
+
+public function login($correo, $clave) {
+    try {
+        $sql = "CALL sp_LoginUsuario(:correo)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(":correo", $correo);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data && $clave === $data['ClaveHash']) {
+            return new Usuario(
+                $data['IdUsuario'],
+                $data['Nombre'],
+                $data['Correo'],
+                $data['ClaveHash'],
+                $data['Rol'],
+                $data['Estado'],
+                $data['FechaRegistro']
+            );
+        }
+
+        return null;
+    } catch (PDOException $e) {
+    error_log("Error en login: " . $e->getMessage()); // 👈 log en PHP, no echo
+    return null;
+    }
+}
+
+
 
     public function crearUsuario(Usuario $usuario) {
         try {
@@ -68,4 +97,7 @@ class usuarioDAO {
             return false;
         }
     }
+
+
+
 }

@@ -26,7 +26,6 @@ class Usuario {
         $this->fechaRegistro = $fechaRegistro;
     }
 
-    // Getters y Setters
     public function getIdUsuario() {
         return $this->idUsuario;
     }

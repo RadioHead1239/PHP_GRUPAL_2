@@ -1,0 +1,60 @@
+body {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+}
+
+.card {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-primary {
+    background: #007bff;
+    border: none;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+#mensaje {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+#mensaje.success {
+    color: #28a745;
+}
+
+#mensaje.error {
+    color: #dc3545;
+}
+
+#mensaje.loading {
+    color: #007bff;
+}
+
+/* Mejoras para el botón mostrar/ocultar contraseña */
+#togglePassword {
+    cursor: pointer;
+}
+
+.input-group .btn {
+    border-left: none;
+}
+
+#togglePassword i {
+    padding: 0 5px;
+}
+
+/* Color distinto cuando la contraseña está visible */
+#togglePassword.active i {
+    color: #0056b3;
+}
