@@ -1,42 +1,68 @@
 <!-- Sidebar -->
-<div class="bg-dark text-white p-3 vh-100" style="width: 220px;">
-  <h4 class="text-center mb-4">
-    <i class="fa-solid fa-cash-register"></i> Ventas
-  </h4>
-  <ul class="nav flex-column">
-    <li class="nav-item mb-2">
-      <a href="../venta/nueva.php" class="nav-link text-white">
-        <i class="fa-solid fa-cart-plus"></i> Nueva Venta
+<div class="d-flex flex-column flex-shrink-0 bg-dark text-white p-3 vh-100 shadow" style="width: 240px;">
+  <!-- Logo / Título -->
+  <a href="../dashboard.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <i class="fa-solid fa-cash-register fa-lg me-2"></i>
+    <span class="fs-5 fw-bold">Sistema Ventas</span>
+  </a>
+  <hr class="text-secondary">
+
+  <!-- Menú -->
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a href="../venta/RealizarVenta.php" class="nav-link text-white">
+        <i class="fa-solid fa-cart-plus me-2"></i> Nueva Venta
       </a>
     </li>
-    <li class="nav-item mb-2">
-      <a href="../venta/listado.php" class="nav-link text-white">
-        <i class="fa-solid fa-receipt"></i> Ventas
+    <li>
+      <a href="../venta/ventas.php" class="nav-link text-white">
+        <i class="fa-solid fa-receipt me-2"></i> Ventas
       </a>
     </li>
-    <li class="nav-item mb-2">
+    <li>
       <a href="../cliente/listado.php" class="nav-link text-white">
-        <i class="fa-solid fa-user-group"></i> Clientes
+        <i class="fa-solid fa-user-group me-2"></i> Clientes
       </a>
     </li>
 
     <?php if ($_SESSION['usuario']['Rol'] === 'Administrador'): ?>
-      <li class="nav-item mb-2">
+      <hr class="text-secondary">
+      <li>
         <a href="../producto/listado.php" class="nav-link text-white">
-          <i class="fa-solid fa-box-open"></i> Productos
+          <i class="fa-solid fa-box-open me-2"></i> Productos
         </a>
       </li>
-      <li class="nav-item mb-2">
-        <a href="../usuario/listado.php" class="nav-link text-white">
-          <i class="fa-solid fa-users-gear"></i> Usuarios
+      <li>
+        <a href="../usuario/usuarios.php" class="nav-link text-white">
+          <i class="fa-solid fa-users-gear me-2"></i> Usuarios
         </a>
       </li>
     <?php endif; ?>
-
-    <li class="nav-item mt-4">
-      <a href="../../logout.php" class="nav-link text-danger">
-        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
-      </a>
-    </li>
   </ul>
+
+  <hr class="text-secondary">
+
+  <!-- Footer Sidebar -->
+  <div class="dropdown">
+    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+      <i class="fa-solid fa-user-circle fa-lg me-2"></i>
+      <strong><?php echo $_SESSION['usuario']['Nombre'] ?? 'Invitado'; ?></strong>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+      <li><a class="dropdown-item" href="../../logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión</a></li>
+    </ul>
+  </div>
 </div>
+
+<!-- Estilos hover -->
+<style>
+  .nav-link {
+    border-radius: 6px;
+    padding: 8px 12px;
+    transition: all 0.2s;
+  }
+  .nav-link:hover {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+  }
+</style>
