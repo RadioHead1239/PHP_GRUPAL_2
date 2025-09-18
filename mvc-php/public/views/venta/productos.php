@@ -2,7 +2,7 @@
 session_start();
 
 // Solo admin
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrador') {
+if (!isset($_SESSION['usuario'])) {
     header("Location: ../usuario/login.php");
     exit;
 }
@@ -19,150 +19,9 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrad
     </button>
   </div>
 
-  <div class="row g-4">
-    <?php
-    $productos = [
-      [
-        "id" => 1,
-        "nombre" => "Laptop Gamer",
-        "precio" => 3500,
-        "stock" => 5,
-        "estado" => true,
-        "imagenes" => ["../../assets/img/laptop1.jpg", "../../assets/img/laptop2.jpg"]
-      ],
-      [
-        "id" => 2,
-        "nombre" => "Mouse Inalámbrico",
-        "precio" => 120,
-        "stock" => 20,
-        "estado" => true,
-        "imagenes" => ["../../assets/img/mouse1.jpg"]
-      ],
-      [
-        "id" => 3,
-        "nombre" => "Teclado Mecánico",
-        "precio" => 250,
-        "stock" => 10,
-        "estado" => false,
-        "imagenes" => ["../../assets/img/teclado1.jpg", "../../assets/img/teclado2.jpg", "../../assets/img/teclado3.jpg"]
-      ]
-    ];
-
-    foreach ($productos as $p): ?>
-      <div class="col-md-4">
-  <div class="card product-card shadow-lg border-0 h-100">
-    <!-- Imagen -->
-    <div class="position-relative">
-      <img src="../../assets/img/laptop1.jpg" 
-           class="card-img-top producto-img rounded-top"
-           alt="Laptop Gamer"
-           data-bs-toggle="modal" 
-           data-bs-target="#modalImagenes1">
-      <span class="badge estado-badge bg-success">Activo</span>
-    </div>
-
-    <!-- Info -->
-    <div class="card-body text-center">
-      <h5 class="card-title fw-bold text-dark">Laptop Gamer</h5>
-
-      <!-- 👇 Descripción resumida -->
-      <p class="text-muted small mb-2">
-        Laptop de alto rendimiento con procesador Intel i7, 16GB RAM y tarjeta RTX 3060...
-      </p>
-
-      <p class="mb-1">Precio: 
-        <span class="fw-bold text-success">S/ 3,500.00</span>
-      </p>
-      <p class="mb-2">Stock: 
-        <span class="fw-bold text-primary">5</span>
-      </p>
-    </div>
-
-    <!-- Botones -->
-    <div class="card-footer d-flex justify-content-between bg-light border-0">
-      <button class="btn btn-sm btn-outline-primary w-50 me-1"
-        data-bs-toggle="modal" 
-        data-bs-target="#modalEditar1">
-        <i class="fa-solid fa-pen"></i> Editar
-      </button>
-      <button class="btn btn-sm btn-outline-danger w-50 ms-1 btnEliminar" 
-        data-id="1" 
-        data-nombre="Laptop Gamer">
-        <i class="fa-solid fa-trash"></i> Eliminar
-      </button>
-    </div>
-  </div>
-</div>
-
-
-      <!-- Modal de imágenes -->
-      <div class="modal fade" id="modalImagenes<?php echo $p['id']; ?>" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content border-0 shadow">
-            <div class="modal-body p-0">
-              <div id="carousel<?php echo $p['id']; ?>" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <?php foreach ($p['imagenes'] as $i => $img): ?>
-                    <div class="carousel-item <?php echo $i === 0 ? 'active' : ''; ?>">
-                      <img src="<?php echo $img; ?>" class="d-block w-100 rounded" alt="Imagen <?php echo $i+1; ?>">
-                    </div>
-                  <?php endforeach; ?>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?php echo $p['id']; ?>" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carousel<?php echo $p['id']; ?>" data-bs-slide="next">
-                  <span class="carousel-control-next-icon"></span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal Editar Producto -->
-      <div class="modal fade" id="modalEditar<?php echo $p['id']; ?>" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title"><i class="fa-solid fa-pen"></i> Editar Producto</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" class="form-control" value="<?php echo $p['nombre']; ?>">
-                  </div>
-                  <div class="col-md-3">
-                    <label class="form-label">Precio</label>
-                    <input type="number" class="form-control" step="0.01" value="<?php echo $p['precio']; ?>">
-                  </div>
-                  <div class="col-md-3">
-                    <label class="form-label">Stock</label>
-                    <input type="number" class="form-control" value="<?php echo $p['stock']; ?>">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label">Descripción</label>
-                    <textarea class="form-control">Descripción ejemplo...</textarea>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label">Imágenes</label>
-                    <input type="file" class="form-control" multiple>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button class="btn btn-primary">Guardar Cambios</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <?php endforeach; ?>
+  <!-- Contenedor dinámico de productos -->
+  <div class="row g-4" id="listaProductos">
+    <!-- Aquí se cargan con JS -->
   </div>
 </div>
 
@@ -196,8 +55,8 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrad
               <textarea class="form-control" name="Descripcion"></textarea>
             </div>
             <div class="col-md-6">
-              <label class="form-label">Imagen principal</label>
-              <input type="file" class="form-control" name="Imagen" required>
+              <label class="form-label">Imágenes (separadas por ;)</label>
+              <input type="text" class="form-control" name="Imagen" placeholder="img1.jpg;img2.jpg">
             </div>
             <div class="col-md-6">
               <label class="form-label">Estado</label>
@@ -217,10 +76,218 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrad
   </div>
 </div>
 
+<!-- Modal Editar Producto -->
+<div class="modal fade" id="modalEditar" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title"><i class="fa-solid fa-pen"></i> Editar Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditarProducto" enctype="multipart/form-data">
+  <input type="hidden" name="IdProducto" id="editIdProducto">
+  <div class="mb-3">
+    <label>Nombre</label>
+    <input type="text" class="form-control" name="Nombre" id="editNombre">
+  </div>
+  <div class="mb-3">
+    <label>Precio</label>
+    <input type="number" class="form-control" name="Precio" id="editPrecio" step="0.01">
+  </div>
+  <div class="mb-3">
+    <label>Stock</label>
+    <input type="number" class="form-control" name="Stock" id="editStock">
+  </div>
+  <div class="mb-3">
+    <label>Descripción</label>
+    <textarea class="form-control" name="Descripcion" id="editDescripcion"></textarea>
+  </div>
+  <div class="mb-3">
+    <label>Imagen</label>
+    <input type="file" class="form-control" name="Imagen" id="editImagen">
+    <input type="hidden" name="ImagenActual" id="editImagenActual"> <!-- 👈 Mantener imagen previa -->
+  </div>
+  <div class="mb-3">
+    <label>Estado</label>
+    <select class="form-select" name="Estado" id="editEstado">
+      <option value="1">Activo</option>
+      <option value="0">Inactivo</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" type="submit" form="formEditarProducto">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- SweetAlert y JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+
 <script>
+// 🚀 Cargar productos dinámicamente
+async function cargarProductos() {
+  try {
+    const res = await fetch("../../api/ProductoService.php?action=listar");
+    const productos = await res.json();
+
+    const contenedor = document.getElementById("listaProductos");
+    contenedor.innerHTML = "";
+
+    productos.forEach(p => {
+      const imagenes = p.Imagen ? p.Imagen.split(";") : [];
+      const primeraImg = imagenes[0] ? imagenes[0] : "../../assets/img/no-image.png";
+
+      contenedor.innerHTML += `
+        <div class="col-md-4 animate__animated animate__fadeIn">
+          <div class="card product-card shadow-lg border-0 h-100">
+            <div class="position-relative">
+              <img src="${primeraImg}" class="card-img-top producto-img rounded-top" alt="${p.Nombre}"
+                   data-bs-toggle="modal" data-bs-target="#modalImagenes${p.IdProducto}">
+              <span class="badge estado-badge ${p.Estado == 1 ? 'bg-success' : 'bg-danger'}">
+                ${p.Estado == 1 ? 'Activo' : 'Inactivo'}
+              </span>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title fw-bold text-dark">${p.Nombre}</h5>
+              <p class="text-muted small mb-2">${p.Descripcion ? p.Descripcion.substring(0, 60) : ""}...</p>
+              <p class="mb-1">Precio: <span class="fw-bold text-success">S/ ${p.Precio}</span></p>
+              <p class="mb-2">Stock: <span class="fw-bold text-primary">${p.Stock}</span></p>
+            </div>
+            <div class="card-footer d-flex justify-content-between bg-light border-0">
+             <button class="btn btn-sm btn-outline-primary w-50 me-1 btnEditar"
+                data-bs-toggle="modal" data-bs-target="#modalEditar"
+                data-id="${p.IdProducto}" data-nombre="${p.Nombre}" 
+                data-precio="${p.Precio}" data-stock="${p.Stock}" 
+                data-descripcion="${p.Descripcion}" data-imagen="${p.Imagen}" 
+                data-estado="${p.Estado}">
+                <i class="fa-solid fa-pen"></i> Editar
+            </button>
+
+              <button class="btn btn-sm btn-outline-danger w-50 ms-1 btnEliminar"
+                      data-id="${p.IdProducto}" data-nombre="${p.Nombre}">
+                <i class="fa-solid fa-trash"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal con Carousel -->
+        <div class="modal fade" id="modalImagenes${p.IdProducto}" tabindex="-1">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+              <div class="modal-body p-0">
+                <div id="carousel${p.IdProducto}" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner">
+                    ${imagenes.map((img, i) => `
+                      <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                        <img src="${img}" class="d-block w-100 producto-carousel-img" alt="Imagen ${i+1}">
+                      </div>
+                    `).join('')}
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carousel${p.IdProducto}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carousel${p.IdProducto}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    agregarEventosEliminar();
+    agregarEventosEditar();
+  } catch (err) {
+    console.error("Error al cargar productos:", err);
+  }
+}
+
+
+// 🚀 Crear producto
+document.getElementById("formCrearProducto").addEventListener("submit", async e => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  formData.append("action", "crear");
+
+  const res = await fetch("../../api/ProductoService.php", {
+    method: "POST",
+    body: formData
+  });
+  const data = await res.json();
+
+  if (data.success) {
+    Swal.fire("Éxito", "Producto creado correctamente", "success");
+    e.target.reset();
+    cargarProductos();
+    bootstrap.Modal.getInstance(document.getElementById("modalCrear")).hide();
+  } else {
+    Swal.fire("Error", "No se pudo crear el producto", "error");
+  }
+});
+
+// 🚀 Editar producto con logs de depuración
+document.getElementById("formEditarProducto").addEventListener("submit", async e => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  formData.append("action", "editar");
+
+  // 👀 Verificar qué datos se están enviando
+  console.log("📤 Datos enviados en editar:");
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}: ${value}`);
+  }
+
+  try {
+    const res = await fetch("../../api/ProductoService.php", {
+      method: "POST",
+      body: formData
+    });
+
+    // 👀 Verificar si la respuesta realmente es JSON
+    const text = await res.text();
+    console.log("📥 Respuesta cruda del servidor:", text);
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (error) {
+      console.error("❌ Error al parsear JSON:", error);
+      return;
+    }
+
+    console.log("✅ Respuesta JSON parseada:", data);
+
+    if (data.success) {
+  Swal.fire("Éxito", "Producto actualizado correctamente", "success");
+  cargarProductos().then(() => {
+    const card = document.querySelector(`[data-id="${formData.get("IdProducto")}"]`).closest(".card");
+    if (card) {
+      card.classList.add("animate__animated", "animate__pulse");
+    }
+  });
+  bootstrap.Modal.getInstance(document.getElementById("modalEditar")).hide();
+}
+  } catch (err) {
+    console.error("❌ Error en fetch editar:", err);
+    Swal.fire("Error", "Problema de conexión con el servidor", "error");
+  }
+});
+
+
+// 🚀 Eliminar producto
+function agregarEventosEliminar() {
   document.querySelectorAll(".btnEliminar").forEach(btn => {
     btn.addEventListener("click", function () {
       const id = this.dataset.id;
@@ -235,14 +302,47 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrad
         cancelButtonText: "Cancelar",
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6"
-      }).then(result => {
+      }).then(async result => {
         if (result.isConfirmed) {
-          Swal.fire("Eliminado", "El producto ha sido eliminado.", "success");
-          // Aquí llamas a tu backend con fetch/AJAX para eliminar en BD
+          const formData = new FormData();
+          formData.append("action", "eliminar");
+          formData.append("IdProducto", id);
+
+          const res = await fetch("../../api/ProductoService.php", {
+            method: "POST",
+            body: formData
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            Swal.fire("Eliminado", "Producto eliminado exitosamente", "success");
+            cargarProductos();
+          } else {
+            Swal.fire("Error", "No se pudo eliminar el producto", "error");
+          }
         }
       });
     });
   });
+}
+// 🚀 Rellenar modal de editar
+function agregarEventosEditar() {
+  document.querySelectorAll(".btnEditar").forEach(btn => {
+    btn.addEventListener("click", function () {
+      document.getElementById("editIdProducto").value = this.dataset.id;
+      document.getElementById("editNombre").value = this.dataset.nombre;
+      document.getElementById("editPrecio").value = this.dataset.precio;
+      document.getElementById("editStock").value = this.dataset.stock;
+      document.getElementById("editDescripcion").value = this.dataset.descripcion || "";
+      document.getElementById("editEstado").value = this.dataset.estado;
+      document.getElementById("editImagenActual").value = this.dataset.imagen;
+
+    });
+  });
+}
+
+// 🚀 Inicializar
+cargarProductos();
 </script>
 
 <!-- Estilos -->
@@ -257,8 +357,16 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['Rol'] !== 'Administrad
     box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   }
   .producto-img {
-    height: 200px;
+    width: 100%;
     object-fit: cover;
+    cursor: pointer;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  .producto-carousel-img {
+    height: 500px;
+    object-fit: contain;
+    background: #000;
   }
   .estado-badge {
     position: absolute;
