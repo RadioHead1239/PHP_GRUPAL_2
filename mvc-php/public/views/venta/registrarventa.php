@@ -11,68 +11,231 @@ include '../layout/header.php';
 include '../layout/sidebar.php';
 ?>
 
-<div class="container-fluid p-4">
-  <h2 class="mb-4"><i class="fa-solid fa-cart-plus"></i> Registrar Venta</h2>
-
-  <!-- Cliente -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title"><i class="fa-solid fa-user"></i> Cliente</h5>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label class="form-label">Seleccionar Cliente</label>
-          <input type="text" class="form-control" placeholder="Buscar cliente..." id="clienteInput">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Fecha</label>
-          <input type="date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
-        </div>
-      </div>
+<div class="flex-grow-1 p-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4 animate-fadeIn">
+    <div>
+      <h1 class="h2 fw-bold text-gradient mb-1">
+        <i class="fa-solid fa-cart-plus me-2"></i>Registrar Nueva Venta
+      </h1>
+      <p class="text-muted mb-0">Crea una nueva venta de manera rápida y eficiente</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="Guardar borrador">
+        <i class="fa-solid fa-save me-1"></i>Borrador
+      </button>
+      <button class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Ventas recientes">
+        <i class="fa-solid fa-history me-1"></i>Recientes
+      </button>
     </div>
   </div>
 
-  <!-- Productos -->
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title"><i class="fa-solid fa-box-open"></i> Productos</h5>
-
-      <!-- Buscador de productos -->
-      <div class="mb-3">
-        <label class="form-label">Buscar Producto</label>
-        <input type="text" id="productoSearch" class="form-control" placeholder="Escribe el nombre del producto...">
-        <div id="productoList" class="list-group position-absolute w-50 shadow-sm" style="z-index:1000;"></div>
+  <div class="row g-4">
+    <!-- Panel izquierdo - Cliente y productos -->
+    <div class="col-lg-8">
+      <!-- Información del Cliente -->
+      <div class="card shadow-custom mb-4 animate-fadeInUp" style="animation-delay: 0.1s;">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fa-solid fa-user me-2"></i>Información del Cliente
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">
+                <i class="fa-solid fa-search me-2"></i>Buscar Cliente
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Nombre, correo o teléfono del cliente..." id="clienteInput">
+                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalBuscarCliente">
+                  <i class="fa-solid fa-search"></i>
+                </button>
+              </div>
+              <div id="clienteSeleccionado" class="mt-2" style="display: none;">
+                <div class="alert alert-success d-flex align-items-center">
+                  <i class="fa-solid fa-check-circle me-2"></i>
+                  <div>
+                    <strong id="nombreCliente"></strong><br>
+                    <small id="infoCliente"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">
+                <i class="fa-solid fa-calendar me-2"></i>Fecha de Venta
+              </label>
+              <input type="date" class="form-control" value="<?php echo date('Y-m-d'); ?>" id="fechaVenta">
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Tabla de productos -->
-      <div class="table-responsive">
-        <table class="table table-striped align-middle" id="tablaVenta">
-          <thead class="table-dark">
-            <tr>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Descuento (%)</th>
-              <th>Subtotal</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-          <tfoot>
-            <tr class="fw-bold">
-              <td colspan="4" class="text-end">Total:</td>
-              <td id="totalVenta">0.00</td>
-              <td></td>
-            </tr>
-          </tfoot>
-        </table>
+      <!-- Búsqueda de Productos -->
+      <div class="card shadow-custom mb-4 animate-fadeInUp" style="animation-delay: 0.2s;">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fa-solid fa-box-open me-2"></i>Agregar Productos
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">
+                <i class="fa-solid fa-search me-2"></i>Buscar Producto
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-box"></i>
+                </span>
+                <input type="text" id="productoSearch" class="form-control" placeholder="Nombre, código o descripción del producto...">
+                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalBuscarProducto">
+                  <i class="fa-solid fa-search"></i>
+                </button>
+              </div>
+              <div id="productoList" class="list-group position-absolute w-100 shadow-sm" style="z-index:1000; display: none;"></div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">
+                <i class="fa-solid fa-barcode me-2"></i>Escáner de Código
+              </label>
+              <button class="btn btn-outline-success w-100" data-bs-toggle="tooltip" title="Escanear código de barras">
+                <i class="fa-solid fa-qrcode me-1"></i>Escanear
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Botones -->
-      <div class="d-flex justify-content-end gap-2 mt-3">
-        <button class="btn btn-secondary" id="btnLimpiar"><i class="fa-solid fa-eraser"></i> Limpiar</button>
-        <button class="btn btn-success"><i class="fa-solid fa-save"></i> Guardar Venta</button>
-        <button class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
-        <button class="btn btn-primary"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+      <!-- Lista de Productos -->
+      <div class="card shadow-custom animate-fadeInUp" style="animation-delay: 0.3s;">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fa-solid fa-list me-2"></i>Productos Seleccionados
+            </h5>
+            <span class="badge bg-primary" id="contadorProductos">0 productos</span>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="tablaVenta">
+              <thead>
+                <tr>
+                  <th class="border-0">Producto</th>
+                  <th class="border-0">Precio</th>
+                  <th class="border-0">Cantidad</th>
+                  <th class="border-0">Descuento</th>
+                  <th class="border-0">Subtotal</th>
+                  <th class="border-0">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyProductos">
+                <tr id="filaVacia">
+                  <td colspan="6" class="text-center text-muted py-5">
+                    <i class="fa-solid fa-shopping-cart fa-3x mb-3 d-block"></i>
+                    <p class="mb-0">No hay productos agregados</p>
+                    <small>Busca y agrega productos para comenzar la venta</small>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho - Resumen y totales -->
+    <div class="col-lg-4">
+      <!-- Resumen de Venta -->
+      <div class="card shadow-custom mb-4 animate-fadeInUp" style="animation-delay: 0.4s;">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fa-solid fa-calculator me-2"></i>Resumen de Venta
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <div class="text-center p-3 bg-light rounded">
+                <h4 class="fw-bold text-primary mb-1" id="totalProductos">0</h4>
+                <small class="text-muted">Productos</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center p-3 bg-light rounded">
+                <h4 class="fw-bold text-success mb-1" id="totalCantidad">0</h4>
+                <small class="text-muted">Unidades</small>
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+          
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal:</span>
+            <span id="subtotalVenta">S/ 0.00</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Descuento:</span>
+            <span class="text-success" id="descuentoVenta">-S/ 0.00</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>IGV (18%):</span>
+            <span id="igvVenta">S/ 0.00</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <h5 class="fw-bold mb-0">Total:</h5>
+            <h4 class="fw-bold text-success mb-0" id="totalVenta">S/ 0.00</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métodos de Pago -->
+      <div class="card shadow-custom mb-4 animate-fadeInUp" style="animation-delay: 0.5s;">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fa-solid fa-credit-card me-2"></i>Método de Pago
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary" data-metodo="efectivo">
+              <i class="fa-solid fa-money-bill me-2"></i>Efectivo
+            </button>
+            <button class="btn btn-outline-success" data-metodo="tarjeta">
+              <i class="fa-solid fa-credit-card me-2"></i>Tarjeta
+            </button>
+            <button class="btn btn-outline-info" data-metodo="transferencia">
+              <i class="fa-solid fa-university me-2"></i>Transferencia
+            </button>
+            <button class="btn btn-outline-warning" data-metodo="mixto">
+              <i class="fa-solid fa-hand-holding-usd me-2"></i>Mixto
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="card shadow-custom animate-fadeInUp" style="animation-delay: 0.6s;">
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-success btn-lg" id="btnGuardarVenta">
+              <i class="fa-solid fa-save me-2"></i>Guardar Venta
+            </button>
+            <button class="btn btn-primary" id="btnImprimir">
+              <i class="fa-solid fa-print me-2"></i>Imprimir
+            </button>
+            <button class="btn btn-outline-danger" id="btnLimpiar">
+              <i class="fa-solid fa-eraser me-2"></i>Limpiar Todo
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -223,5 +386,60 @@ function eliminarProducto(i) {
   renderTabla();
 }
 </script>
+
+<!-- Modal Buscar Cliente -->
+<div class="modal fade" id="modalBuscarCliente" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="fa-solid fa-user-group me-2"></i>Buscar Cliente
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="buscarClienteModal" placeholder="Buscar por nombre, correo o teléfono...">
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Contacto</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tablaClientesModal">
+              <!-- Se llenará dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Buscar Producto -->
+<div class="modal fade" id="modalBuscarProducto" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="fa-solid fa-box-open me-2"></i>Buscar Producto
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="buscarProductoModal" placeholder="Buscar por nombre, descripción o código...">
+        </div>
+        <div class="row" id="productosModal">
+          <!-- Se llenará dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php include '../layout/footer.php'; ?>

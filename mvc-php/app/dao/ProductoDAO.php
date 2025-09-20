@@ -12,21 +12,38 @@ class ProductoDAO {
 
     public function crearProducto(Producto $producto) {
         try {
-            $sql = "CALL sp_CrearProducto(:nombre, :imagen, :descripcion, :precio, :stock, :estado)";
+            // 👇 Debug antes de ejecutar
+            error_log("🔎 Insertando producto: " . json_encode([
+                "nombre" => $producto->getNombre(),
+                "imagen" => $producto->getImagen(),
+                "descripcion" => $producto->getDescripcion(),
+                "precio" => $producto->getPrecio(),
+                "stock" => $producto->getStock(),
+                "estado" => $producto->getEstado()
+            ]));
+    
+            $sql = "INSERT INTO Producto (Nombre, Imagen, Descripcion, Precio, Stock, Estado)
+                    VALUES (:nombre, :imagen, :descripcion, :precio, :stock, :estado)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":nombre", $producto->getNombre());
             $stmt->bindValue(":imagen", $producto->getImagen());
             $stmt->bindValue(":descripcion", $producto->getDescripcion());
             $stmt->bindValue(":precio", $producto->getPrecio());
-            $stmt->bindValue(":stock", $producto->getStock());
+            $stmt->bindValue(":stock", $producto->getStock(), PDO::PARAM_INT);
             $stmt->bindValue(":estado", $producto->getEstado(), PDO::PARAM_BOOL);
-            return $stmt->execute();
+    
+            $ok = $stmt->execute();
+    
+            error_log("✅ Producto insertado, filas afectadas: " . $stmt->rowCount());
+    
+            return $ok;
         } catch (PDOException $e) {
-            error_log("Error crear producto: " . $e->getMessage());
+            error_log("❌ Error al crear producto: " . $e->getMessage());
             return false;
         }
     }
-
+    
+    
     public function leerProductos() {
         try {
             $sql = "CALL sp_LeerProductos()";

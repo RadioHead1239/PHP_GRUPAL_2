@@ -29,18 +29,20 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         console.log("Respuesta del servidor:", data);
 
         if (data.success) {
-            mensaje.innerHTML = `<i class="fa fa-check-circle"></i> Bienvenido ${data.rol}`;
+            mensaje.innerHTML = `<i class="fa fa-check-circle"></i> Bienvenido ${data.usuario.Nombre}`;
             mensaje.className = "success";
 
-            //  Guardar datos en localStorage (depuración temporal)
-            localStorage.setItem("usuarioRol", data.rol);
-            localStorage.setItem("usuarioCorreo", correo);
+            // Guardar datos en localStorage
+            localStorage.setItem("usuarioId", data.usuario.IdUsuario);
+            localStorage.setItem("usuarioRol", data.usuario.Rol);
+            localStorage.setItem("usuarioNombre", data.usuario.Nombre);
+            localStorage.setItem("usuarioCorreo", data.usuario.Correo);
 
-            //  Redirigir según el rol
+            // Redirigir según el rol
             setTimeout(() => {
-                if (data.rol === "Administrador") {
+                if (data.usuario.Rol === "Administrador") {
                     window.location.href = "/Proyecto_Grupal/PHP_GRUPAL_2/mvc-php/public/views/usuario/admin.php";
-                } else if (data.rol === "Vendedor") {
+                } else if (data.usuario.Rol === "Vendedor") {
                     window.location.href = "/Proyecto_Grupal/PHP_GRUPAL_2/mvc-php/public/views/usuario/vendedor.php";
                 }
             }, 1200);
