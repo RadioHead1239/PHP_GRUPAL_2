@@ -15,11 +15,8 @@ class ClienteDAO {
             $sql = "CALL sp_CrearCliente(:nombre, :apellido, :email, :telefono, :direccion, :estado)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":nombre", $cliente->getNombre());
-            $stmt->bindValue(":apellido", $cliente->getApellido());
-            $stmt->bindValue(":email", $cliente->getEmail());
             $stmt->bindValue(":telefono", $cliente->getTelefono());
             $stmt->bindValue(":direccion", $cliente->getDireccion());
-            $stmt->bindValue(":estado", (int)$cliente->getEstado(), PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Error crear cliente: " . $e->getMessage());
@@ -62,11 +59,8 @@ class ClienteDAO {
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":id", $cliente->getIdCliente(), PDO::PARAM_INT);
             $stmt->bindValue(":nombre", $cliente->getNombre());
-            $stmt->bindValue(":apellido", $cliente->getApellido());
-            $stmt->bindValue(":email", $cliente->getEmail());
             $stmt->bindValue(":telefono", $cliente->getTelefono());
             $stmt->bindValue(":direccion", $cliente->getDireccion());
-            $stmt->bindValue(":estado", (int)$cliente->getEstado(), PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Error actualizar cliente: " . $e->getMessage());
