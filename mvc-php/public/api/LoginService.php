@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 $host = 'localhost';
 $dbname = 'SistemaVentas';
 $username = 'root';
-$password = 'sqladmin';
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

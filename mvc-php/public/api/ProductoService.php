@@ -95,7 +95,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode(['success' => false, 'message' => 'Método no permitido']);
 }
 
-// 📊 Estadísticas con SQL simples
+// Estadísticas con SQL simples
 function obtenerEstadisticasProductos() {
     try {
         $db = new Database();
